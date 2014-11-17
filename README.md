@@ -13,6 +13,7 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
 After unzipping you will see the following project structure
 
 path/projectfiles/all_run.R 
+
 path/projectfiles/UCIHARDataset/
 
 etc...
@@ -22,7 +23,9 @@ Now in the RStudio enter the following at the prompt
 >setwd(path)
 
 >library(dplyr)
+
 >library(plyr)
+
 >library(Hmisc)
 
 > source("c:\\Rex\\projectfiles\\run_analysis.R")
@@ -31,6 +34,7 @@ Now in the RStudio enter the following at the prompt
 You should see a file create in your folder as "AllMeansData.txt".
 
 Please note , inside the code, I have added n=20 in read.fwf command. This is basically to read just first 20 lines of each file .
+
 If you have enough memory in your system, you can remove thos entry frm the code and run. You should see the entire 
 output file.
 
