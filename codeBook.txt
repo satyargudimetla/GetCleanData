@@ -32,4 +32,18 @@ tgravityaccmeany"                  "tgravityaccmeanz"                  "tbodyacc
 "angletbodygyrojerkmeangravitymean" "anglexgravitymean"                 "angleygravitymean"                
 "anglezgravitymean"                
 
+Also, the folowing ar ethe varialbes for rows. If you observe the getSubjectMeanN_1 to show that it is subject 1.
+If we take full file into process we get the variables until 30 line getSubjectMeanN_1, getSubjectMeanN_2...
+Although "_" are violating the principle of tidy data, I have deliverately added to dfferentiate the number with common name. 
+The logic I have used to create this is explained in README.md file.
+
+getSubjectMeanN_1 
+getSubjectMeanN_2...until getSubjectMeanN_30
+
+getWALKING 
+getWALKING_UPSTAIRS  
+getWALKING_DOWNSTAIRS 
+getSITTING 
+getSTANDING  
+getLAYING           
 *****************************************************************************************************************
