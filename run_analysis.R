@@ -19,10 +19,13 @@ getData <- function(path) {
 	#getXTotal
 
 	#READ Train Y files
+	setPath <- paste(path,"\\UCIHARDataset\\train\\Y_train.txt",sep="")
       get_y_train <- read.fwf("c:\\Rex\\projectfiles\\UCIHARDataset\\train\\Y_train.txt" ,n=20, width=1)
 	#get_y_train 
 
 	#READ Test Y files
+	setPath <- paste(path,"\\UCIHARDataset\\test\\Y_test.txt",sep="")
+
       get_y_test <- read.fwf("c:\\Rex\\projectfiles\\UCIHARDataset\\test\\Y_test.txt",n=20, width=1)
 	#get_y_test	
 
@@ -31,6 +34,7 @@ getData <- function(path) {
 	#getYTotal
 	
 	# READ SUBJECT TEST
+	setPath <- paste(path,"\\UCIHARDataset\\test\\subject_test.txt",sep="")
 	getSubjectTest<- read.fwf("c:\\Rex\\projectfiles\\UCIHARDataset\\test\\subject_test.txt",n=20, width=1)
 
 	# READ SUBJECT TRAIN
@@ -58,11 +62,12 @@ getData <- function(path) {
 
 	#REPLACE column names with tidy chars
 	names(total) <- gsub("\\(\\)" ,"", names(total))
-	names(total) <- gsub("\\,", "_", names(total))
-	names(total) <- gsub("\\(" ,"_", names(total))
-	names(total) <- gsub("\\)" ,"_", names(total))
-	names(total) <- gsub("\\-" ,"_", names(total))
+	names(total) <- gsub("\\,", "", names(total))
+	names(total) <- gsub("\\(" ,"", names(total))
+	names(total) <- gsub("\\)" ,"", names(total))
+	names(total) <- gsub("\\-" ,"", names(total))
 
+	
 
 	#RENAME ACTIVITY
 	total$Activity[total$Activity == 1] <- "WALKING"
@@ -70,9 +75,9 @@ getData <- function(path) {
 	total$Activity[total$Activity == 3] <- "WALKING_DOWNSTAIRS"
 	total$Activity[total$Activity == 4] <- "SITTING"
 	total$Activity[total$Activity == 5] <- "STANDING"
-	total$Activity[total$Activity == 6] <- "LAYING"
-	
-	#remove NAs
+	total$Activity[total$Activity == 6] <- "LAYING"	
+
+	#Remove NAs
 	total <- total[,1:562]
 	names(total) <- tolower(names(total))
 
@@ -116,21 +121,17 @@ getData <- function(path) {
 	ActivityMeanData<- rbind(getWALKING,getWALKING_UPSTAIRS,getWALKING_DOWNSTAIRS,getSITTING,getSTANDING,getLAYING)
 	#print(ActivityMeanData)
 
-	#exclude and create colmeans for activity
+	#exclude and create colmeans for subject
 
 	subjectMean  <- c()
 	getUniqSubjects <- unique(TotalSubject )
+
 	for(j in getUniqSubjects ){
-		#print(getUniqSubjects[j])
 		getV <- filter(total, subject==getUniqSubjects[j])
-		getSubjectMeanN <- colMeans(getV [3:length(getV )], na.rm=TRUE)
-		#rownames(getSubjectMeanN) <- paste(rownames(getSubjectMeanN),j, sep="")
-		
-		subjectMean <- rbind(subjectMean,getSubjectMeanN ) 
-		
+		getSubjectMeanN <- colMeans(getV [3:length(getV )], na.rm=TRUE)		
+		subjectMean <- rbind(subjectMean,getSubjectMeanN ) 		
 		rownames(subjectMean) <- paste(rownames(subjectMean),"_", j,sep="")
 		#print(rownames(subjectMean))
-
 	}
 
 	#print(subjectMean )
@@ -143,4 +144,7 @@ getData <- function(path) {
 	#total
 	finalMeans
 	write.table(finalMeans, file = "c:\\Rex\\projectfiles\\AllMeansData.txt", sep = ",", row.names = FALSE)
+	
+	finalMeans
+
 }
