@@ -6,58 +6,74 @@ getData <- function(path) {
 	}
 	#print(x)
 	setPath <- paste(path,"\\UCIHARDataset\\train\\X_train.txt",sep="")
+	getData_x_train <- read.fwf(setPath ,n=200, widths=x)
+	getData_x_train_df <- data.frame(  getData_x_train)
+  rm(getData_x_train)
 
-	getData_x_train <- read.fwf(setPath ,n=20, widths=x)
-	#getData_x_train
-
+  #print(getData_x_train_df)
+ 
 	setPath <- paste(path,"\\UCIHARDataset\\test\\X_test.txt",sep="")
-	getData_x_test <-read.fwf(setPath , n=20, widths=x)
-	#getData_x_test
-
+	getData_x_test <-read.fwf(setPath , n=200, widths=x)
+	getData_x_test_df <- data.frame(getData_x_test)
+  rm(getData_x_test)
+	#print(getData_x_test_df)
+  
 	# bind x test and x train
-	getXTotal<- rbind(getData_x_train, getData_x_test)
+	getXTotal<- rbind(getData_x_train_df, getData_x_test_df)
 	#getXTotal
-
+  #print(getXTotal)
+  
 	#READ Train Y files
 	setPath <- paste(path,"\\UCIHARDataset\\train\\Y_train.txt",sep="")
-      get_y_train <- read.fwf("c:\\Rex\\projectfiles\\UCIHARDataset\\train\\Y_train.txt" ,n=20, width=1)
+  get_y_train <- read.fwf("c:\\Rex\\projectfiles\\UCIHARDataset\\train\\Y_train.txt" ,n=200, width=1)
+	get_y_train_df <- data.frame(get_y_train)
+  rm(get_y_train)
 	#get_y_train 
 
 	#READ Test Y files
 	setPath <- paste(path,"\\UCIHARDataset\\test\\Y_test.txt",sep="")
 
-      get_y_test <- read.fwf("c:\\Rex\\projectfiles\\UCIHARDataset\\test\\Y_test.txt",n=20, width=1)
+  get_y_test <- read.fwf("c:\\Rex\\projectfiles\\UCIHARDataset\\test\\Y_test.txt",n=200, width=1)
+	get_y_test_df <- data.frame(get_y_test)
+  rm(get_y_test)
 	#get_y_test	
 
 	# bind Y test and Y train
-	getYTotal<- rbind(get_y_train, get_y_test	)
+	getYTotal<- rbind(get_y_train_df,get_y_test_df	)
 	#getYTotal
+	
+	# READ SUBJECT TRAIN
+	getSubjectTrain<- read.fwf("c:\\Rex\\projectfiles\\UCIHARDataset\\train\\subject_train.txt",n=200, width=1)
+	getSubjectTrain_df <-  data.frame(getSubjectTrain)
+	rm(getSubjectTrain)
 	
 	# READ SUBJECT TEST
 	setPath <- paste(path,"\\UCIHARDataset\\test\\subject_test.txt",sep="")
-	getSubjectTest<- read.fwf("c:\\Rex\\projectfiles\\UCIHARDataset\\test\\subject_test.txt",n=20, width=1)
-
-	# READ SUBJECT TRAIN
-	getSubjectTrain<- read.fwf("c:\\Rex\\projectfiles\\UCIHARDataset\\train\\subject_train.txt",n=20, width=1)
-
-	TotalSubject <- rbind(getSubjectTrain,getSubjectTrain)
-
+	getSubjectTest<- read.fwf("c:\\Rex\\projectfiles\\UCIHARDataset\\test\\subject_test.txt",n=200, width=1)
+	getSubjectTest_df <- data.frame(getSubjectTest)
+  rm(getSubjectTest)
+  
+	TotalSubject <- rbind(getSubjectTrain_df,getSubjectTest_df)
+  #print(TotalSubject)
 	# final data set
-	total <- cbind(TotalSubject ,getSubjectTest, getYTotal, getXTotal)
-	
+	total <- cbind(TotalSubject ,getYTotal, getXTotal)
+	#print(total)
+  
 	# READ Column names
-	getFeatureNames <- read.csv("c:\\Rex\\projectfiles\\UCIHARDataset\\features.txt", sep=" ")
-	getFeatureNames 
+	getFeatureNames <- read.table("c:\\Rex\\projectfiles\\UCIHARDataset\\features.txt", sep=" ")
+	#getFeatureNames 
 	
-	names(getFeatureNames) <- c("id", "value")
-	
-	#transpose the matrix
+	names(getFeatureNames) <- c("id", "value")  
+  #addColumn <- c("1",  "tBodyAcc.mean-X")  
+	#getFeatureNames <- rbind(addColumn, getFeatureNames)          
+  #transpose the matrix
+	#print(getFeatureNames)
+  
 	featureT <- t(getFeatureNames)
-	
+
 	#parse Just names
-	featureTT <- featureT[2,]
-	
-	
+	featureTT <- featureT[2,]	
+	#print(featureTT)
 	colnames(total) <- c("Subject", "Activity", featureTT)
 
 	#REPLACE column names with tidy chars
@@ -66,8 +82,6 @@ getData <- function(path) {
 	names(total) <- gsub("\\(" ,"", names(total))
 	names(total) <- gsub("\\)" ,"", names(total))
 	names(total) <- gsub("\\-" ,"", names(total))
-
-	
 
 	#RENAME ACTIVITY
 	total$Activity[total$Activity == 1] <- "WALKING"
@@ -78,7 +92,7 @@ getData <- function(path) {
 	total$Activity[total$Activity == 6] <- "LAYING"	
 
 	#Remove NAs
-	total <- total[,1:562]
+	total <- total[,1:561]
 	names(total) <- tolower(names(total))
 
 	#Select onlt columns that contain mean and Std
