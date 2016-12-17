@@ -1,7 +1,8 @@
 GetCleanData
 ============
-
-This project is about using the R package all_run.R and the codebook provided to process the samsung Galaxy sensonr data.
+Satya
+This anges added
+Project is about using the R package all_run.R and the codebook provided to process the samsung Galaxy sensonr data.
 
 To implement , please follow the give instructions.
 
